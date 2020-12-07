@@ -80,7 +80,7 @@ namespace Netwatch.Cams.UI.ViewModels
 
         private void LoadCamerasInfo()
         {
-            var contracts = _businessLogic.GetCameras().Where(x=>x.active && x.connected).ToList();
+            var contracts = _businessLogic.GetCameras().ToList();
             foreach(var cam in contracts)
             {
                 string curDir = Directory.GetCurrentDirectory();
@@ -129,7 +129,7 @@ namespace Netwatch.Cams.UI.ViewModels
         {
             string curDir = Directory.GetCurrentDirectory();
             var liveStream = new Uri(String.Format("{0}/video.html?sid={1}&cid={2}&host={3}&h={4}&w={5}",
-                Properties.user.Default.UseServiceLayer ? ConfigurationManager.AppSettings["serviceLayer"] : $"file:///{curDir}", _businessLogic.GetLoginSessionId(), (string)obj, new Uri(ConfigurationManager.AppSettings["baseUrl"]).Authority, 460, 620)).AbsoluteUri;
+                Properties.user.Default.UseServiceLayer ? ConfigurationManager.AppSettings["serviceLayer"] : $"file:///{curDir}", _businessLogic.GetLoginSessionId(), ((CameraContract)obj).id, new Uri(ConfigurationManager.AppSettings["baseUrl"]).Authority, 460, 620)).AbsoluteUri;
 
             Messenger.Default.Send<ViewStreamLink>(new ViewStreamLink() { Link = liveStream });
 

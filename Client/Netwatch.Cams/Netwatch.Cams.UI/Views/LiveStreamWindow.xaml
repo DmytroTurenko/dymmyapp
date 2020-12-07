@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Netwatch.Cams.UI.Views"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        xmlns:ctrl="clr-namespace:Netwatch.Cams.UI.UserControls"
         mc:Ignorable="d"
         DataContext="{Binding Source={StaticResource mainViewModelLocator},  Path=LiveStreamViewModel}"
         Title="Live Stream"  Height="{Binding Height}" Width="{Binding Width}" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
@@ -31,16 +31,7 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Border>
-                        <StackPanel Orientation="Vertical">
-                            <wv2:WebView2 Source="{Binding liveStream}" Height="200" Width="250" Margin="20"/>
-                            <Button Content="big screen" Width="100">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Click">
-                                        <i:InvokeCommandAction  Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.BigScreenCommand }" CommandParameter="{Binding id}"/>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </Button>
-                        </StackPanel>
+                        <ctrl:ViewCamGridElement Camera="{Binding Mode=OneWay}" BigScreenCommand="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.BigScreenCommand }"/>
                     </Border>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
