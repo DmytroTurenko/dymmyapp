@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JSMpeg Stream Client</title>
+	<style type="text/css">
+		html, body {
+			background-color: #111;
+			text-align: center;
+		}
+	</style>
+	
+</head>
+<body>
+	<canvas id="video-canvas" crossorigin="anonymous"></canvas>
+	<script type="text/javascript" src="libs/jsmpeg.min.js"></script>
+	<script type="text/javascript">
+		var canvas = document.getElementById('video-canvas');
+		var url = 'https://95.45.67.239:14426/mt/api/rest/v1/media?session=AXsAhP8KEIN7-ep1hkdZpWAIDSz7Ec4SFgoUZvaBoFMfsC2KZR2LfzikjIe3kj8aEBVGOZo440VIr4zVUbPL3eYiEDuqV7SC8UYRkDITyZNcNq0qCER1bW15QVBQMiEaEE2erIRywEb_v4iN8kVXy1cqDWFkbWluaXN0cmF0b3I&cameraId=4xIx1DMwMLSwMDU2SDEySdNLTsw1MBAS-NXovCSSzVlmS1TBSofumAwA&format=fmp4&frames=all&media=video&t=live';
+		var player = new JSMpeg.Player(url, {canvas: canvas});
+	</script>
+</body>
+</html>
