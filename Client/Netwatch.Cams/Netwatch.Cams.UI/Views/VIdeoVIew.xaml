@@ -1,0 +1,16 @@
+﻿<Window x:Class="Netwatch.Cams.UI.Views.VIdeoVIew"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Netwatch.Cams.UI.Views"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        mc:Ignorable="d"
+        DataContext="{Binding Source={StaticResource mainViewModelLocator},  Path=VideoViewModel}"
+        Title="Video View"  Height="540" Width="680" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" >
+    <Grid>
+        <Border>
+            <wv2:WebView2 x:Name="view" Source="{Binding LiveStream, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="480" Width="640" Margin="10" />
+        </Border>
+    </Grid>
+</Window>

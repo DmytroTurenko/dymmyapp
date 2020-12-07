@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Netwatch.Cams.UI", "Netwatch.Cams.UI\Netwatch.Cams.UI.csproj", "{857ECFE4-ED53-45A3-9C9B-0041F1122008}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Netwatch.Cams.BL", "Netwatch.Cams.BL\Netwatch.Cams.BL.csproj", "{2B7683E5-CF21-43F6-B820-301B12C8A4EB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{857ECFE4-ED53-45A3-9C9B-0041F1122008}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{857ECFE4-ED53-45A3-9C9B-0041F1122008}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{857ECFE4-ED53-45A3-9C9B-0041F1122008}.Debug|x64.ActiveCfg = Debug|x64
+		{857ECFE4-ED53-45A3-9C9B-0041F1122008}.Debug|x64.Build.0 = Debug|x64
+		{857ECFE4-ED53-45A3-9C9B-0041F1122008}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{857ECFE4-ED53-45A3-9C9B-0041F1122008}.Release|Any CPU.Build.0 = Release|Any CPU
+		{857ECFE4-ED53-45A3-9C9B-0041F1122008}.Release|x64.ActiveCfg = Release|x64
+		{857ECFE4-ED53-45A3-9C9B-0041F1122008}.Release|x64.Build.0 = Release|x64
+		{2B7683E5-CF21-43F6-B820-301B12C8A4EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B7683E5-CF21-43F6-B820-301B12C8A4EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B7683E5-CF21-43F6-B820-301B12C8A4EB}.Debug|x64.ActiveCfg = Debug|x64
+		{2B7683E5-CF21-43F6-B820-301B12C8A4EB}.Debug|x64.Build.0 = Debug|x64
+		{2B7683E5-CF21-43F6-B820-301B12C8A4EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B7683E5-CF21-43F6-B820-301B12C8A4EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B7683E5-CF21-43F6-B820-301B12C8A4EB}.Release|x64.ActiveCfg = Release|x64
+		{2B7683E5-CF21-43F6-B820-301B12C8A4EB}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A118363D-0BC5-4AA7-9B58-EF569D8A95D7}
+	EndGlobalSection
+EndGlobal

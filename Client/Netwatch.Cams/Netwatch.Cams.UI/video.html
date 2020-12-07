@@ -1,0 +1,79 @@
+﻿<html>
+<head>
+    <script type="text/javascript">const urlString = window.location.href;
+        const urlObject = new URL(urlString);
+        var sessionId = urlObject.searchParams.get("sid");
+        var cameraId = urlObject.searchParams.get("cid");
+        var host = urlObject.searchParams.get("host");
+        var height = urlObject.searchParams.get("h");
+        var width = urlObject.searchParams.get("w");
+
+        window.onload = initializeMediaSource;
+        // 4xIx1DMwMLSwMDU2SDEySdNLTsw1MBAS-NXovCSSzVlmS1TBSofumAwA
+        // const  sessionId = 'AXsAhP8KEIN7-ep1hkdZpWAIDSz7Ec4SFgoUXa3u4WuUnpidvuFrl_2isB6KVj4aEOTgTMnRGEF9pJjOq38AoUYiEE3sr6UrXE-OprcGmqKth2MqCER1bW15QVBQMiEaEE2erIRywEb_v4iN8kVXy1cqDWFkbWluaXN0cmF0b3I';
+        function initializeMediaSource(){
+            initCamera();
+        }
+
+        function initCamera() {
+
+            var url = 'https://' + host + '/mt/api/rest/v1/media?session='+sessionId+'&cameraId='+cameraId+'&format=fmp4&frames=all&media=video&t=live&quality=high&sample=PT0.2S&max_gap=PT0M2S';
+            var vidElement = document.querySelector('#camera1');
+            if (window.MediaSource) {
+                var mediaSource = new MediaSource();
+                vidElement.src = URL.createObjectURL(mediaSource);
+                vidElement.height = height;
+                vidElement.width = width;
+                vidElement.addEventListener("playing", play_clicked, false);
+
+                mediaSource.addEventListener('sourceopen', (e) => sourceOpen(e,url));
+            } else {
+                console.log("The Media Source Extensions API is not supported.");
+            }
+        }
+
+        function play_clicked() {
+            var div = document.querySelector('#camera1');
+            if (div.requestFullscreen)
+                div.requestFullscreen();
+            else if (div.webkitRequestFullscreen)
+                div.webkitRequestFullscreen();
+            else if (div.msRequestFullScreen)
+                div.msRequestFullScreen();
+        }
+
+        function sourceOpen(e, url) {
+            var mediaSource = e.target;
+            var mime = 'video/mp4; codecs="avc1.640029"';
+            var sourceBuffer = mediaSource.addSourceBuffer(mime);
+            var incomingBuffer = [];
+            var videoUrl = url;
+
+            fetch(videoUrl).then(response => {
+                streamReader = response.body.getReader();
+
+                sourceBuffer.addEventListener('updateend', e => {
+                    if (incomingBuffer.length > 0 && !sourceBuffer.updating)
+                        sourceBuffer.appendBuffer(incomingBuffer.pop());
+                });
+
+                streamReader.read().then(function processData({done, value}) {
+                    if (done) return;
+
+                    if (sourceBuffer.updating) {
+                        incomingBuffer.push(value.buffer);
+                    } else {
+                        sourceBuffer.appendBuffer(value.buffer);
+                    }
+
+                    setTimeout(() => streamReader.read().then(processData), 0);
+                });
+            });
+        }</script>
+</head>
+
+<body>
+    <video id="camera1" controls autoplay muted url=''></video>
+</body>
+
+</html>

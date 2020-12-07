@@ -1,0 +1,36 @@
+﻿<Window x:Class="Netwatch.Cams.UI.Views.ServerDisconnect"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Netwatch.Cams.UI.Views"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        DataContext="{Binding Source={StaticResource mainViewModelLocator},  Path=ServerDisconnectViewModel}"
+        Title="Connection to server" Height="200" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+    </Window.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="ContentRendered">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <StackPanel Orientation="Vertical" Margin="20" Visibility="{Binding Path=ReConnection, Converter={StaticResource BoolToVisConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <TextBlock Text="Reconnection after" FontSize="24" HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="{Binding Seconds}" FontSize="24"/>
+                <TextBlock Text=" seconds" FontSize="24"/>
+            </StackPanel>
+            <Button Content="Manual reconnection" Width="150" Margin="10">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{Binding ConnectionCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+        </StackPanel>
+        <TextBlock Text="Connecting ..." FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Path=Connection, Mode=TwoWay, Converter={StaticResource BoolToVisConverter}, UpdateSourceTrigger=PropertyChanged }"/>
+    </Grid>
+</Window>
