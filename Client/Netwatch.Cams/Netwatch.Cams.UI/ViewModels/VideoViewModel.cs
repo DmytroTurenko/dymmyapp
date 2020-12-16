@@ -19,7 +19,7 @@ namespace Netwatch.Cams.UI.ViewModels
         {
             if (!businessLogic.IsAuthenticated())
             {
-                if (!businessLogic.Login()) return;
+                if (!businessLogic.Login(Properties.user.Default.UseServiceLayer)) return;
             }
 
             Messenger.Default.Register<ViewStreamLink>

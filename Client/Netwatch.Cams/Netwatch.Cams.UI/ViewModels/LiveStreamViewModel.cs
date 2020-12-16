@@ -62,7 +62,7 @@ namespace Netwatch.Cams.UI.ViewModels
         {
             if (!businessLogic.IsAuthenticated())
             {
-                if (!businessLogic.Login()) return;
+                if (!businessLogic.Login(Properties.user.Default.UseServiceLayer)) return;
             }
 
             CloseCommand = new CustomCommand(CloseWindow, CanCloseWindow);
@@ -84,8 +84,10 @@ namespace Netwatch.Cams.UI.ViewModels
             foreach(var cam in contracts)
             {
                 string curDir = Directory.GetCurrentDirectory();
-                cam.liveStream = new Uri(String.Format("{0}/video.html?sid={1}&cid={2}&host={3}&h={4}&w={5}",
-                     Properties.user.Default.UseServiceLayer ? ConfigurationManager.AppSettings["serviceLayer"] : $"file:///{curDir}", _businessLogic.GetLoginSessionId(), cam.id, new Uri(ConfigurationManager.AppSettings["baseUrl"]).Authority, 172, 228)).AbsoluteUri;// _businessLogic.GetLive(cam.id, "format", "fmp4");// "rtmp://95.158.55.65/live/test";
+
+                var currentDir = String.Format("{0}/video.html?sid={1}&cid={2}&host={3}&h={4}&w={5}", $"file:///{curDir}", _businessLogic.GetLoginSessionId(Properties.user.Default.UseServiceLayer), cam.id, new Uri(ConfigurationManager.AppSettings["baseUrl"]).Authority, 172, 228);
+
+                cam.liveStream = new Uri(Properties.user.Default.UseServiceLayer ? _businessLogic.GetLive(cam.id, "format", "fmp4") : currentDir).AbsoluteUri;
             }
 
             var countInWidth = ((decimal)contracts.Count / 4) > 1 ? 4 : Math.Ceiling((decimal)contracts.Count / 4) == 1 ? 2 : Math.Ceiling((decimal)contracts.Count / 4);
@@ -128,8 +130,9 @@ namespace Netwatch.Cams.UI.ViewModels
         private void BigScreen(Object obj)
         {
             string curDir = Directory.GetCurrentDirectory();
-            var liveStream = new Uri(String.Format("{0}/video.html?sid={1}&cid={2}&host={3}&h={4}&w={5}",
-                Properties.user.Default.UseServiceLayer ? ConfigurationManager.AppSettings["serviceLayer"] : $"file:///{curDir}", _businessLogic.GetLoginSessionId(), ((CameraContract)obj).id, new Uri(ConfigurationManager.AppSettings["baseUrl"]).Authority, 460, 620)).AbsoluteUri;
+            var currentDir = String.Format("{0}/video.html?sid={1}&cid={2}&host={3}&h={4}&w={5}", $"file:///{curDir}", _businessLogic.GetLoginSessionId(Properties.user.Default.UseServiceLayer), ((CameraContract)obj).id, new Uri(ConfigurationManager.AppSettings["baseUrl"]).Authority, 460,620);
+
+            var liveStream = new Uri(Properties.user.Default.UseServiceLayer ? _businessLogic.GetLive(((CameraContract)obj).id, "format", "fmp4") : currentDir).AbsoluteUri;
 
             Messenger.Default.Send<ViewStreamLink>(new ViewStreamLink() { Link = liveStream });
 

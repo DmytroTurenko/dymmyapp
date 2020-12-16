@@ -24,7 +24,7 @@ namespace Netwatch.Cams.UI.ViewModels
         {
             get
             {
-                return new Uri(ConfigurationManager.AppSettings["baseUrl"].ToString()).Host;
+                return new Uri(_businessLogic.apiUrl).Host;
             }
         }
 
@@ -32,7 +32,7 @@ namespace Netwatch.Cams.UI.ViewModels
         {
             get
             {
-                return new Uri(ConfigurationManager.AppSettings["baseUrl"].ToString()).Port.ToString();
+                return new Uri(_businessLogic.apiUrl).Port.ToString();
             }
         }
 
@@ -40,7 +40,7 @@ namespace Netwatch.Cams.UI.ViewModels
         {
             if (!businessLogic.IsAuthenticated())
             {
-                if (!businessLogic.Login()) return;
+                if (!businessLogic.Login(Properties.user.Default.UseServiceLayer)) return;
             }
 
             CloseCommand = new CustomCommand(CloseWindow, CanCloseWindow);

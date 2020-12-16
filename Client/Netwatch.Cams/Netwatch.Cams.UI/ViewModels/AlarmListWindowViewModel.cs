@@ -28,7 +28,7 @@ namespace Netwatch.Cams.UI.ViewModels
         {
             if (!businessLogic.IsAuthenticated())
             {
-                if (!businessLogic.Login()) return;
+                if (!businessLogic.Login(Properties.user.Default.UseServiceLayer)) return;
             }
 
            // _dialogueService = new DialogueService();
@@ -164,6 +164,7 @@ namespace Netwatch.Cams.UI.ViewModels
                 {
                     var camera = cameras.FirstOrDefault(x => x.id == alarm.associatedCameras.First());
                     var events = _businessLogic.GetEvents(alarm.id);
+                    if (events == null) continue;
                     foreach (var evt in events)
                     {
                         alarmModel.Add(new Models.AlarmModel
@@ -203,6 +204,7 @@ namespace Netwatch.Cams.UI.ViewModels
             {
                 Properties.user.Default.UseServiceLayer = value;
                 Properties.user.Default.Save();
+                _businessLogic.Login(Properties.user.Default.UseServiceLayer);
                 Messenger.Default.Send<UseServerLayerMessage>( new UseServerLayerMessage());
             }
         }

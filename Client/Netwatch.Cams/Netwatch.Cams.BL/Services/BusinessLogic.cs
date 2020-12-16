@@ -14,6 +14,12 @@ namespace Netwatch.Cams.BL.Services
         private HttpClient _httpClient;
         private TokenGenerator _tokenGenerator;
         private string sessionId;
+        private bool useServiceLayer;
+
+        protected string baseUrl = ConfigurationManager.AppSettings["baseUrl"];
+        protected string serviceLayer = ConfigurationManager.AppSettings["serviceLayer"];
+
+        public string apiUrl;
 
         public BusinessLogic()
         {
@@ -21,14 +27,16 @@ namespace Netwatch.Cams.BL.Services
             _tokenGenerator = new TokenGenerator();
         }
 
-        public bool Login()
+        public bool Login(bool useServiceLayer = false)
         {
             try
             {
-                _httpClient.SetBaseUrl(ConfigurationManager.AppSettings["baseUrl"].ToString());
+                this.useServiceLayer = useServiceLayer;
+                apiUrl = useServiceLayer ? serviceLayer : baseUrl;
+                 _httpClient.SetBaseUrl(apiUrl);
 
 
-                var token = _tokenGenerator.GenerateToken(ConfigurationManager.AppSettings["userNonce"].ToString(), ConfigurationManager.AppSettings["userKey"].ToString());
+                var token = _tokenGenerator.GenerateToken(ConfigurationManager.AppSettings["userNonce"], ConfigurationManager.AppSettings["userKey"]);
 
                 var loginPostJson = JsonConvert.SerializeObject(new LoginRequestModel()
                 {
@@ -57,13 +65,13 @@ namespace Netwatch.Cams.BL.Services
             return (sessionId != null);
         }
 
-        public string GetLoginSessionId()
+        public string GetLoginSessionId(bool useServiceLayer = false)
         {
             try
             {
 
                 if (!IsAuthenticated())
-                    Login();
+                    Login(useServiceLayer);
 
                 return sessionId;
             }
@@ -103,13 +111,13 @@ namespace Netwatch.Cams.BL.Services
 
         public string GetLive(string cameraId, string type, string format)
         {
-            string currentSessionQuery = $"{ConfigurationManager.AppSettings["baseUrl"]}media?session={sessionId}&cameraId={cameraId}&{type}={format}";
+            string currentSessionQuery = $"{apiUrl}media?session={sessionId}&cameraId={cameraId}&{type}={format}";
             return currentSessionQuery;
         }
 
         public string GetRecordedVideo(string cameraId, string date, string range)
         {
-            string currentSessionQuery = $"{ConfigurationManager.AppSettings["baseUrl"]}media?session={sessionId}&cameraId={cameraId}&format=fmp4&t={date}&range={range}";
+            string currentSessionQuery = $"{apiUrl}media?session={sessionId}&cameraId={cameraId}&format=fmp4&t={date}&range={range}";
             return currentSessionQuery;
         }
 
@@ -118,7 +126,7 @@ namespace Netwatch.Cams.BL.Services
             string currentSessionQuery = $"session={sessionId}&cameraId={cameraId}&format=mpd";
             var audio = _httpClient.HttpGet<MPD>("media", currentSessionQuery);
             var stream = audio.Period.FirstOrDefault(x => x.Representation.Any(e => e.audioSamplingRateSpecified))?.Representation.FirstOrDefault(a => a.audioSamplingRateSpecified).BaseURL;
-            var uri = new Uri(ConfigurationManager.AppSettings["baseUrl"]);
+            var uri = new Uri(apiUrl);
             currentSessionQuery = $"{uri.AbsoluteUri.Replace(uri.AbsolutePath,"")}{stream}";
             return currentSessionQuery;
         }

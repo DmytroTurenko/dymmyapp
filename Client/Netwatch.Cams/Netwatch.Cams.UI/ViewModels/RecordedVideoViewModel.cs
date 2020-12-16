@@ -22,7 +22,7 @@ namespace Netwatch.Cams.UI.ViewModels
         {
             if (!businessLogic.IsAuthenticated())
             {
-                if (!businessLogic.Login()) return;
+                if (!businessLogic.Login(Properties.user.Default.UseServiceLayer)) return;
             }
 
             GetImageCommand = new CustomCommand(GetImage, CanGetImageCommand);

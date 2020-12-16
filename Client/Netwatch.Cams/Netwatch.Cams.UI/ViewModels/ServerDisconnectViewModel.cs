@@ -118,7 +118,7 @@ namespace Netwatch.Cams.UI.ViewModels
 
             if (!_businessLogic.IsAuthenticated())
             {
-                if (!_businessLogic.Login())
+                if (!_businessLogic.Login(Properties.user.Default.UseServiceLayer))
                 {
                     Seconds = 10;
                     Connection = false;
